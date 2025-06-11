@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 
 interface LoginProps {
   setView?: (view: 'buttons' | 'signup' | 'login') => void;
+  setIsLoggedIn: (val: boolean) => void;
 }
 
-const Login: React.FC<LoginProps> = ({ setView }) => {
+const Login: React.FC<LoginProps> = ({ setView , setIsLoggedIn}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -25,7 +26,10 @@ const Login: React.FC<LoginProps> = ({ setView }) => {
         const data = await response.json();
         console.log('Login successful! Token:', data.token);
         localStorage.setItem('authToken', data.token);
+        setIsLoggedIn?.(true);  // ✅ Add this
         // You can redirect or change views here
+
+        
       } else {
         const message = await response.text();
         setError(message || 'Invalid credentials');
